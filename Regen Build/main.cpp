@@ -2,23 +2,20 @@
 #include <fstream>
 #include <Rpc.h>
 #include <string>
+#include <vector>
 #include <Objbase.h>
+#include <Windows.h>
 
-std::string createGUID()
-{
-	char* guidString;
-	GUID guid;
-	CoCreateGuid(&guid);
-	UuidToStringA(&guid, (RPC_CSTR*)&guidString);
-	return std::string(guidString, 36);
-}
+#include "File.h"
+
+
 
 bool createVCfilters()
 {
 	std::string guid[3];
 	for (int i = 0; i < 3; i++)
 	{
-		guid[i] = createGUID();
+		guid[i] = File::createGUID();
 	}
 
 	const int lineAmount = 17;
@@ -64,6 +61,8 @@ void createVCXPROJ( int ver)
 }
 
 
+
+
 int main(int argc, char ** argv)
 {
 	if (argc < 3)
@@ -80,15 +79,20 @@ int main(int argc, char ** argv)
 	std::cout << projectPath << std::endl;
 	std::string regenPath = argv[2];
 	std::cout << regenPath << std::endl;
+	std::cout << "Arg Count: " << argc << std::endl;;
 
-	// Write a ifstream that reads a config file
-	// 
-
-
-	std::cout << argc;
-	createVCfilters();
+	// Write a ifstream that reads a config file 
+	
+	//createVCfilters();
 
 
+	std::vector<std::string> filesFound;
+	File::findFile("C:\\Users\\Richard\\Desktop\\Testing files\\C files\\*.h", filesFound);
+	
+	for (int i = 0; i < filesFound.size(); i++)
+	{
+		std::cout << filesFound[i].c_str() << std::endl;
+	}
 
 	//Stop Auto Closing
 	std::getchar();
